@@ -10,6 +10,7 @@ function App() {
   const [searchAccount, setSearchAccount] = useState("");
 
   const handleSearchInputChange = (event) => {
+    // todo don't rewrite component on every change
     setSearchAccount(event.target.value);
   }
 
