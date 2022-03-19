@@ -1,9 +1,21 @@
 import './App.css';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
+import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import React, {useState} from 'react';
 
 
 function App() {
+  const [account, setAccount] = useState({});
+
+  const handleSearchInputChange = (event) => {
+    setAccount(event.target.value);
+  }
+
+  const handleSearchButton = (event) => {
+    event.preventDefault();
+  }
+
+
   return (
     <div className="app">
       <header className="app-header">
@@ -11,17 +23,20 @@ function App() {
       </header>
 
       <main>
-        <InputGroup className="search-account">
-          <FormControl
-            placeholder="Search for account id"
-            aria-label=""
-            aria-describedby=""
-          />
-          
-          <Button variant="primary" id="search-button">
-            Button
-          </Button>
-        </InputGroup>
+        <Form onSubmit={handleSearchButton}>
+          <InputGroup className="search-account">
+            <FormControl
+              placeholder="Search for account id"
+              aria-label=""
+              aria-describedby=""
+              onChange={handleSearchInputChange}
+            />
+            
+            <Button type="submit" variant="primary" id="search-button">
+              Search
+            </Button>
+          </InputGroup>
+        </Form>
       </main>
     </div>
   );
