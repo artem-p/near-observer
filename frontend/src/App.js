@@ -2,16 +2,19 @@ import './App.css';
 import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState} from 'react';
+import AccountInfo from './AccountInfo';
 
 
 function App() {
-  const [account, setAccount] = useState({});
+  const [account, setAccount] = useState("");
+  const [searchAccount, setSearchAccount] = useState("");
 
   const handleSearchInputChange = (event) => {
-    setAccount(event.target.value);
+    setSearchAccount(event.target.value);
   }
 
   const handleSearchButton = (event) => {
+    setAccount(searchAccount);
     event.preventDefault();
   }
 
@@ -37,6 +40,8 @@ function App() {
             </Button>
           </InputGroup>
         </Form>
+
+        <AccountInfo account={account}/>
       </main>
     </div>
   );
