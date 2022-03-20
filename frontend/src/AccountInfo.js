@@ -5,8 +5,9 @@ import * as nearApi from 'near-api-js';
 
 function AccountInfo({account}) {
     const { connect } = nearApi;
-    const [availableBalance, setAvailableBalance] = useState(0)
+    const [formattedBalance, setFormattedBalance] = useState({available: 0, staked: 0})
 
+    
     const config = {
         networkId: "testnet",
         // keyStore, // optional if not signing transactions
@@ -18,6 +19,11 @@ function AccountInfo({account}) {
     };
 
     
+    const formatBalance = (internalBalance) => {
+        return parseFloat(nearApi.utils.format.formatNearAmount(internalBalance)).toFixed(5)
+    }
+
+
     useEffect(() => {
         async function fetchInfo() {
             console.log('connect');
@@ -28,9 +34,13 @@ function AccountInfo({account}) {
             console.log(balance);
             console.log(details)
 
-            const availableBalance = nearApi.utils.format.formatNearAmount(balance.available);
-            console.log(availableBalance);
-            setAvailableBalance(availableBalance)
+            const formattedBalance = {
+                available: formatBalance(balance.available),
+                staked: formatBalance(balance.staked)
+            }
+
+            console.log(formattedBalance);
+            setFormattedBalance(formattedBalance)
         }
 
         fetchInfo();
@@ -39,7 +49,7 @@ function AccountInfo({account}) {
     return (
     <div>
         <h2>Account: @{account}</h2>
-        <p>Available Balance: <b>{parseFloat(availableBalance).toFixed(5)} NEAR</b></p>
+        <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
     </div>
   )
 }
