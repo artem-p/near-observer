@@ -21,7 +21,7 @@ function App() {
       <main>
         <SearchInput handleSubmit={handleSearchSubmit}/>
 
-        <AccountInfo account={account}/>
+        <AccountInfo searchAccount={account}/>
       </main>
     </div>
   );
