@@ -40,7 +40,9 @@ function AccountInfo({account}) {
             }
 
             console.log(formattedBalance);
-            setFormattedBalance(formattedBalance)
+
+            // todo too much queries
+            // setFormattedBalance(formattedBalance)
         }
 
         fetchInfo();
@@ -50,6 +52,7 @@ function AccountInfo({account}) {
     <div>
         <h2>Account: @{account}</h2>
         <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
+        <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
     </div>
   )
 }
