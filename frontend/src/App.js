@@ -1,22 +1,14 @@
 import './App.css';
-import { Form, InputGroup, FormControl, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import AccountInfo from './AccountInfo';
-
+import SearchInput from './SearchInput';
 
 function App() {
   const [account, setAccount] = useState("");
-  const [searchAccount, setSearchAccount] = useState("");
 
-  const handleSearchInputChange = useCallback((event) => {
-    // todo don't rewrite component on every change
-    setSearchAccount(event.target.value);
-  })
-
-  const handleSearchButton = (event) => {
-    setAccount(searchAccount);
-    event.preventDefault();
+  const handleSearchSubmit = (searchInput) => {
+    setAccount(searchInput);
   }
 
 
@@ -27,20 +19,7 @@ function App() {
       </header>
 
       <main>
-        <Form onSubmit={handleSearchButton}>
-          <InputGroup className="search-account">
-            <FormControl
-              placeholder="Search for account id"
-              aria-label=""
-              aria-describedby=""
-              onChange={handleSearchInputChange}
-            />
-            
-            <Button type="submit" variant="primary" id="search-button">
-              Search
-            </Button>
-          </InputGroup>
-        </Form>
+        <SearchInput handleSubmit={handleSearchSubmit}/>
 
         <AccountInfo account={account}/>
       </main>
@@ -48,4 +27,4 @@ function App() {
   );
 }
 
-export default App = React.memo(App);
+export default App;
