@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as nearApi from 'near-api-js';
 
 
 
 function AccountInfo({account}) {
     const { connect } = nearApi;
+    const [availableBalance, setAvailableBalance] = useState(0)
 
     const config = {
         networkId: "testnet",
@@ -18,17 +19,27 @@ function AccountInfo({account}) {
 
     
     useEffect(() => {
-        async function nearConnect() {
+        async function fetchInfo() {
             console.log('connect');
             const near = await connect(config);
+            const account = await near.account('artyom-p.testnet')
+            const balance = await account.getAccountBalance()
+            const details = await account.getAccountDetails()
+            console.log(balance);
+            console.log(details)
+
+            const availableBalance = nearApi.utils.format.formatNearAmount(balance.available);
+            console.log(availableBalance);
+            setAvailableBalance(availableBalance)
         }
 
-        nearConnect();
+        fetchInfo();
     }, [{account}]);
 
     return (
     <div>
         <h2>Account: @{account}</h2>
+        <p>Available Balance: <b>{parseFloat(availableBalance).toFixed(5)} NEAR</b></p>
     </div>
   )
 }
