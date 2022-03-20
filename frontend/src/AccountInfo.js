@@ -41,12 +41,11 @@ function AccountInfo({account}) {
 
             console.log(formattedBalance);
 
-            // todo too much queries
-            // setFormattedBalance(formattedBalance)
+            setFormattedBalance(formattedBalance)
         }
 
         fetchInfo();
-    }, [{account}]);
+    }, [account]);
 
     return (
     <div>
