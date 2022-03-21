@@ -24,6 +24,16 @@ function AccountInfo({searchAccount}) {
         return parseFloat(nearApi.utils.format.formatNearAmount(internalBalance)).toFixed(5)
     }
 
+    const getContractInfo = async (near, accountId) =>{
+        const { code_base64 } = await near.connection.provider.query({
+            account_id: accountId,
+            finality: 'final',
+            request_type: 'view_code',
+          });
+        
+        
+        console.log(parseContract(code_base64))
+    }
 
     useEffect(() => {
         async function fetchInfo() {
@@ -46,14 +56,8 @@ function AccountInfo({searchAccount}) {
 
             setFormattedBalance(formattedBalance)
 
-
-            const { code_base64 } = await near.connection.provider.query({
-                account_id: accountId,
-                finality: 'final',
-                request_type: 'view_code',
-              });
-
-            console.log(parseContract(code_base64))
+            getContractInfo(near, accountId);
+            
         }
 
         fetchInfo();
