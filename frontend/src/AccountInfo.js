@@ -1,5 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import * as nearApi from 'near-api-js';
+import './AccountInfo.css';
+import { Container, Row, Col } from 'react-bootstrap';
+
 const { parseContract } = require('near-contract-parser')
 
 
@@ -39,13 +42,19 @@ function AccountInfo({searchAccount}) {
 
     const contractMethods = () => {
         if (contract && contract.methodNames && contract.methodNames.length > 0) {
-            return contract.methodNames.map((method) => {return <li>{method}</li>})
+            return contract.methodNames.map((method) => {return <li key={method}>{method}</li>})
+        }
+    }
+
+    const contractInterfaces = () => {
+        if (contract && contract.probableInterfaces && contract.probableInterfaces.length > 0) {
+            return contract.probableInterfaces.map((contractInterface) => {return <li key={contractInterface}>{contractInterface}</li>})
         }
     }
 
     useEffect(() => {
         async function fetchInfo() {
-            const accountId = searchAccount || 'artyom-p.testnet';
+            const accountId = searchAccount || 'tenk.testnet';
 
             console.log('connect');
             const near = await connect(config);
@@ -80,10 +89,24 @@ function AccountInfo({searchAccount}) {
         <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
 
         <h3>Contract</h3>
-        <h5>Methods: {contract?.methodNames?.length}</h5>
-        <ul>
-            {contractMethods()}
-        </ul>
+        
+        <Container fluid>
+            <Row>
+                <Col xs={3}>
+                    <h5>Methods: {contract?.methodNames?.length}</h5>
+                    <ul>
+                        {contractMethods()}
+                    </ul>
+                </Col>
+                
+                <Col xs={3}>
+                    <h5>Interfaces: {contract?.probableInterfaces?.length}</h5>
+                    <ul>
+                        {contractInterfaces()}
+                    </ul>
+                </Col>
+            </Row>
+        </Container>
     </div>
   )
 }
