@@ -7,7 +7,7 @@ const { parseContract } = require('near-contract-parser')
 function AccountInfo({searchAccount}) {
     const { connect } = nearApi;
     const [formattedBalance, setFormattedBalance] = useState({available: 0, staked: 0})
-
+    const [contract, setContract] = useState({})
     
     const config = {
         networkId: "testnet",
@@ -33,6 +33,14 @@ function AccountInfo({searchAccount}) {
         
         
         console.log(parseContract(code_base64))
+
+        setContract(parseContract(code_base64))
+    }
+
+    const contractMethods = () => {
+        if (contract && contract.methodNames && contract.methodNames.length > 0) {
+            return contract.methodNames.map((method) => {return <li>{method}</li>})
+        }
     }
 
     useEffect(() => {
@@ -66,8 +74,16 @@ function AccountInfo({searchAccount}) {
     return (
     <div>
         <h2>Account: @{searchAccount}</h2>
+
+        <h3>Balance</h3>
         <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
         <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
+
+        <h3>Contract</h3>
+        <h5>Methods: {contract?.methodNames?.length}</h5>
+        <ul>
+            {contractMethods()}
+        </ul>
     </div>
   )
 }
