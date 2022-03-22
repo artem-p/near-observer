@@ -35,6 +35,7 @@ function AccountInfo({searchAccount}) {
           });
         
         
+        console.log(code_base64)
         console.log(parseContract(code_base64))
 
         setContract(parseContract(code_base64))
@@ -61,15 +62,12 @@ function AccountInfo({searchAccount}) {
             const account = await near.account(accountId)
             const balance = await account.getAccountBalance()
             const details = await account.getAccountDetails()
-            console.log(balance);
             console.log(details)
 
             const formattedBalance = {
                 available: formatBalance(balance.available),
                 staked: formatBalance(balance.staked)
             }
-
-            console.log(formattedBalance);
 
             setFormattedBalance(formattedBalance)
 
@@ -100,7 +98,7 @@ function AccountInfo({searchAccount}) {
                 </Col>
                 
                 <Col xs={3}>
-                    <h5>Interfaces: {contract?.probableInterfaces?.length}</h5>
+                    <h5>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
                     <ul>
                         {contractInterfaces()}
                     </ul>
