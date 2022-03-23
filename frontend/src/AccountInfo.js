@@ -7,6 +7,8 @@ const { parseContract } = require('near-contract-parser')
 
 
 
+let near;
+
 function AccountInfo({searchAccount}) {
     const { connect } = nearApi;
     const [formattedBalance, setFormattedBalance] = useState({available: 0, staked: 0})
@@ -27,7 +29,7 @@ function AccountInfo({searchAccount}) {
         return parseFloat(nearApi.utils.format.formatNearAmount(internalBalance)).toFixed(5)
     }
 
-    const getContractInfo = async (near, accountId) =>{
+    const getContractInfo = async (accountId) => {
         const { code_base64 } = await near.connection.provider.query({
             account_id: accountId,
             finality: 'final',
@@ -41,9 +43,30 @@ function AccountInfo({searchAccount}) {
         setContract(parseContract(code_base64))
     }
 
+    async function callMethod(event) {
+        event.preventDefault();
+
+        const methodName = event.target.text
+
+        const rawResult = await near.connection.provider.query({
+            request_type: "call_function",
+            // account_id: "guest-book.testnet",
+            // method_name: "getMessages",
+            account_id: searchAccount,
+            method_name: methodName,
+            args_base64: "e30=",
+            finality: "optimistic",
+        });
+
+        console.log(rawResult);
+
+        const formattedResult = JSON.parse(Buffer.from(rawResult.result).toString());
+        console.log(formattedResult);
+    }
+
     const contractMethods = () => {
         if (contract && contract.methodNames && contract.methodNames.length > 0) {
-            return contract.methodNames.map((method) => {return <li key={method}>{method}</li>})
+            return contract.methodNames.map((method) => {return <li key={method}><a href='' onClick={callMethod}>{method}</a></li>})
         }
     }
 
@@ -58,7 +81,7 @@ function AccountInfo({searchAccount}) {
             const accountId = searchAccount || 'tenk.testnet';
 
             console.log('connect');
-            const near = await connect(config);
+            near = await connect(config);
             const account = await near.account(accountId)
             const balance = await account.getAccountBalance()
             const details = await account.getAccountDetails()
@@ -71,7 +94,7 @@ function AccountInfo({searchAccount}) {
 
             setFormattedBalance(formattedBalance)
 
-            getContractInfo(near, accountId);
+            getContractInfo(accountId);
             
         }
 
