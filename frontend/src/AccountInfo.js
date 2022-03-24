@@ -101,7 +101,7 @@ function AccountInfo({searchAccount}) {
 
     return (
     <div>
-        <h2>Account: @{searchAccount}</h2>
+        <h2 className='account'>Account: @{searchAccount}</h2>
 
         <h3>Balance</h3>
         <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
