@@ -84,8 +84,6 @@ function AccountInfo({searchAccount}) {
             near = await connect(config);
             const account = await near.account(accountId)
             const balance = await account.getAccountBalance()
-            const details = await account.getAccountDetails()
-            console.log(details)
 
             const formattedBalance = {
                 available: formatBalance(balance.available),
