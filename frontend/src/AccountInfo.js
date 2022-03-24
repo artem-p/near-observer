@@ -37,9 +37,6 @@ function AccountInfo({searchAccount}) {
           });
         
         
-        console.log(code_base64)
-        console.log(parseContract(code_base64))
-
         setContract(parseContract(code_base64))
     }
 
