@@ -6,7 +6,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 const { parseContract } = require('near-contract-parser')
 
 
-
 let near;
 
 function AccountInfo({searchAccount}) {
@@ -90,41 +89,49 @@ function AccountInfo({searchAccount}) {
             setFormattedBalance(formattedBalance)
 
             getContractInfo(accountId);
-            
         }
 
-        fetchInfo();
+        if (searchAccount) {
+            fetchInfo();
+        }
     }, [searchAccount]);
 
-    return (
-    <div>
-        <h2 className='account'>Account: @{searchAccount}</h2>
 
-        <h3>Balance</h3>
-        <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
-        <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
-
-        <h3>Contract</h3>
-        
-        <Container fluid>
-            <Row>
-                <Col xs={3}>
-                    <h5>Methods: {contract?.methodNames?.length}</h5>
-                    <ul>
-                        {contractMethods()}
-                    </ul>
-                </Col>
-                
-                <Col xs={3}>
-                    <h5>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
-                    <ul>
-                        {contractInterfaces()}
-                    </ul>
-                </Col>
-            </Row>
-        </Container>
-    </div>
-  )
+    if (searchAccount) {
+        return (
+        <div>
+            <h2 className='account'>Account: @{searchAccount}</h2>
+    
+            <h3>Balance</h3>
+            <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
+            <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
+    
+            <h3>Contract</h3>
+            
+            <Container fluid>
+                <Row>
+                    <Col xs={3}>
+                        <h5>Methods: {contract?.methodNames?.length}</h5>
+                        <ul>
+                            {contractMethods()}
+                        </ul>
+                    </Col>
+                    
+                    <Col xs={3}>
+                        <h5>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
+                        <ul>
+                            {contractInterfaces()}
+                        </ul>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+      )
+    } else {
+        return (
+            <div>Search for account to get contract methods</div>
+        )
+    }
 }
 
 export default AccountInfo
