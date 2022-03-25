@@ -62,7 +62,7 @@ function AccountInfo({searchAccount}) {
 
     const contractMethods = () => {
         if (contract && contract.methodNames && contract.methodNames.length > 0) {
-            return contract.methodNames.map((method) => {return <li key={method}><a href='' onClick={callMethod}>{method}</a></li>})
+            return contract.methodNames.map((method) => {return <li key={method}>{method}</li>})
         }
     }
 
@@ -99,26 +99,28 @@ function AccountInfo({searchAccount}) {
 
     if (searchAccount) {
         return (
-        <div>
-            <h2 className='account'>Account: @{searchAccount}</h2>
-    
-            <h3>Balance</h3>
-            <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
-            <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
-    
-            <h3>Contract</h3>
+        <div className='account-info'>
+            <div className='balance'>
+                <h2 className='account'>Account: @{searchAccount}</h2>
+        
+                <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
+                <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
+        
+            </div>
             
-            <Container fluid>
-                <Row>
-                    <Col xs={3}>
-                        <h5>Methods: {contract?.methodNames?.length}</h5>
+
+            <Container fluid className='contract'>
+                <h3 className='contract__header'>Contract</h3>
+                <Row className='contract__info'>
+                    <Col md={3}>
+                        <h5 className='contract__info__header'>Methods: {contract?.methodNames?.length}</h5>
                         <ul>
                             {contractMethods()}
                         </ul>
                     </Col>
                     
-                    <Col xs={3}>
-                        <h5>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
+                    <Col md={3}>
+                        <h5 className='contract__info__header'>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
                         <ul>
                             {contractInterfaces()}
                         </ul>
@@ -129,7 +131,7 @@ function AccountInfo({searchAccount}) {
       )
     } else {
         return (
-            <div>Search for account to get contract methods</div>
+            <h5 className='no-input-placeholder'>Search for account to get contract methods</h5>
         )
     }
 }
