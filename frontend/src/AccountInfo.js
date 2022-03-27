@@ -131,7 +131,7 @@ function AccountInfo({searchAccount}) {
       )
     } else {
         return (
-            <h5 className='no-input-placeholder'>Search for account to get contract methods</h5>
+            <h5 className='no-input-placeholder'>Search for account to get contract methods.</h5>
         )
     }
 }
