@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import * as nearApi from 'near-api-js';
 import './AccountInfo.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup } from 'react-bootstrap';
 
 const { parseContract } = require('near-contract-parser')
 
@@ -62,13 +62,13 @@ function AccountInfo({searchAccount}) {
 
     const contractMethods = () => {
         if (contract && contract.methodNames && contract.methodNames.length > 0) {
-            return contract.methodNames.map((method) => {return <li key={method}>{method}</li>})
+            return contract.methodNames.map((method) => {return <ListGroup.Item variant='secondary' key={method}>{method}</ListGroup.Item>})
         }
     }
 
     const contractInterfaces = () => {
         if (contract && contract.probableInterfaces && contract.probableInterfaces.length > 0) {
-            return contract.probableInterfaces.map((contractInterface) => {return <li key={contractInterface}>{contractInterface}</li>})
+            return contract.probableInterfaces.map((contractInterface) => {return <ListGroup.Item variant='secondary' key={contractInterface}>{contractInterface}</ListGroup.Item>})
         }
     }
 
@@ -114,16 +114,16 @@ function AccountInfo({searchAccount}) {
                 <Row className='contract__info'>
                     <Col md={3}>
                         <h5 className='contract__info__header'>Methods: {contract?.methodNames?.length}</h5>
-                        <ul>
+                        <ListGroup>
                             {contractMethods()}
-                        </ul>
+                        </ListGroup>
                     </Col>
                     
                     <Col md={3}>
                         <h5 className='contract__info__header'>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
-                        <ul>
+                        <ListGroup>
                             {contractInterfaces()}
-                        </ul>
+                        </ListGroup>
                     </Col>
                 </Row>
             </Container>
