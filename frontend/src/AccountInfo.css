@@ -4,7 +4,8 @@
 
 .account {
     font-weight: 900;
-    margin: 30px auto;
+    margin-top: 50px;
+    margin-bottom: 20px;
 }
 
 .no-input-placeholder {
@@ -12,7 +13,8 @@
 }
 
 .contract__header {
-    margin: 30px auto;
+    margin-top: 50px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
