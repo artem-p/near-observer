@@ -15,7 +15,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Near Observer</h1>
+        <h1>Near Contracts</h1>
       </header>
 
       <main>
