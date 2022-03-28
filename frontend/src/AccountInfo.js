@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import * as nearApi from 'near-api-js';
 import './AccountInfo.css';
-import { Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Placeholder } from 'react-bootstrap';
 
 const { parseContract } = require('near-contract-parser')
 
@@ -63,12 +63,26 @@ function AccountInfo({searchAccount}) {
     const contractMethods = () => {
         if (contract && contract.methodNames && contract.methodNames.length > 0) {
             return contract.methodNames.map((method) => {return <ListGroup.Item variant='secondary' key={method}>{method}</ListGroup.Item>})
+        } else {
+            return [...Array(8)].map((val, index) => {
+                    return  <Placeholder as="p" key={index} animation="glow">
+                                <Placeholder xs={12} size='lg' />
+                            </Placeholder>
+                }
+            ) 
         }
     }
 
     const contractInterfaces = () => {
         if (contract && contract.probableInterfaces && contract.probableInterfaces.length > 0) {
             return contract.probableInterfaces.map((contractInterface) => {return <ListGroup.Item variant='secondary' key={contractInterface}>{contractInterface}</ListGroup.Item>})
+        } else {
+            return [...Array(5)].map((val, index) => {
+                return  <Placeholder as="p" key={index} animation="glow">
+                            <Placeholder xs={12} size='lg' />
+                        </Placeholder>
+                }
+            )
         }
     }
 
