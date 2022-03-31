@@ -96,6 +96,7 @@ function AccountInfo({searchAccount}) {
 
     useEffect(() => {
         async function fetchInfo() {
+            setContract({});
             const accountId = searchAccount || 'tenk.testnet';
 
             console.log('connect');
