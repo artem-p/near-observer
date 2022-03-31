@@ -112,6 +112,8 @@ function AccountInfo({searchAccount}) {
             setFormattedBalance(formattedBalance)
 
             getContractInfo(accountId);
+
+            console.log(await account.state());
         }
 
         if (searchAccount) {
