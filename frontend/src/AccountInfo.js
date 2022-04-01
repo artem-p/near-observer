@@ -12,6 +12,7 @@ function AccountInfo({searchAccount}) {
     const { connect } = nearApi;
     const [formattedBalance, setFormattedBalance] = useState({available: 0, staked: 0})
     const [contract, setContract] = useState({})
+    const [noAccountFound, setNoAccountFound] = useState(false);
     const [noContractFound, setNoContractFound] = useState(false);
 
     
@@ -101,24 +102,33 @@ function AccountInfo({searchAccount}) {
 
     useEffect(() => {
         async function fetchInfo() {
+            setNoAccountFound(false);
             setNoContractFound(false);
             setContract({});
 
             const accountId = searchAccount || 'tenk.testnet';
+            let account;
 
-            console.log('connect');
             near = await connect(config);
-            const account = await near.account(accountId)
-            const balance = await account.getAccountBalance()
 
-            const formattedBalance = {
-                available: formatBalance(balance.available),
-                staked: formatBalance(balance.staked)
+            try {
+                account = await near.account(accountId)
+
+                const balance = await account.getAccountBalance()
+
+                const formattedBalance = {
+                    available: formatBalance(balance.available),
+                    staked: formatBalance(balance.staked)
+                }
+
+                setFormattedBalance(formattedBalance)
+
+                getContractInfo(accountId);
+            } catch (error) {
+                console.log('no account found')
+                setNoAccountFound(true);
+                return;
             }
-
-            setFormattedBalance(formattedBalance)
-
-            getContractInfo(accountId);
         }
 
         if (searchAccount) {
@@ -128,26 +138,32 @@ function AccountInfo({searchAccount}) {
 
 
     if (searchAccount) {
-        return (
-        <div className='account-info'>
-            <div className='balance'>
-                <h2 className='account'>Account: @{searchAccount}</h2>
+        if (!noAccountFound) {
+            return (
+                <div className='account-info'>
+                    <div className='balance'>
+                        <h2 className='account'>Account: @{searchAccount}</h2>
+                
+                        <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
+                        <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
+                
+                    </div>
+                    
         
-                <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
-                <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
+                    <Container fluid className='contract'>
+                        <h3 className='contract__header'>Contract</h3>
+                        <ContractInfo />
+                    </Container>
+                </div>
+            )    
+        } else {
+            return <h5 className='no-account-placeholder'>Account does not exist.</h5>
+        }
         
-            </div>
-            
-
-            <Container fluid className='contract'>
-                <h3 className='contract__header'>Contract</h3>
-                <ContractInfo />
-            </Container>
-        </div>
-      )
+      
     } else {
         return (
-            <h5 className='no-input-placeholder'>Search for account to get contract methods.</h5>
+            <h5 className='no-account-placeholder'>Search for account to get contract methods.</h5>
         )
     }
 
