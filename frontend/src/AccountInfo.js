@@ -124,7 +124,10 @@ function AccountInfo({searchAccount}) {
                 config = testnet_config;
             } else if (accountId.slice(-5) == '.near') {
                 config = mainnet_config
+            } else {
+                config = testnet_config;
             }
+
 
             let account;
 
