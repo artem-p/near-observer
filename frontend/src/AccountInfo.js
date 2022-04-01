@@ -12,6 +12,8 @@ function AccountInfo({searchAccount}) {
     const { connect } = nearApi;
     const [formattedBalance, setFormattedBalance] = useState({available: 0, staked: 0})
     const [contract, setContract] = useState({})
+    const [noContractFound, setNoContractFound] = useState(false);
+
     
     const config = {
         networkId: "testnet",
@@ -29,14 +31,17 @@ function AccountInfo({searchAccount}) {
     }
 
     const getContractInfo = async (accountId) => {
-        const { code_base64 } = await near.connection.provider.query({
-            account_id: accountId,
-            finality: 'final',
-            request_type: 'view_code',
-          });
-        
-        
-        setContract(parseContract(code_base64))
+        try {
+            const { code_base64 } = await near.connection.provider.query({
+                account_id: accountId,
+                finality: 'final',
+                request_type: 'view_code',
+              });
+
+              setContract(parseContract(code_base64))
+        } catch(error) {
+            setNoContractFound(true);
+        }
     }
 
     async function callMethod(event) {
@@ -96,7 +101,9 @@ function AccountInfo({searchAccount}) {
 
     useEffect(() => {
         async function fetchInfo() {
+            setNoContractFound(false);
             setContract({});
+
             const accountId = searchAccount || 'tenk.testnet';
 
             console.log('connect');
@@ -112,8 +119,6 @@ function AccountInfo({searchAccount}) {
             setFormattedBalance(formattedBalance)
 
             getContractInfo(accountId);
-
-            console.log(await account.state());
         }
 
         if (searchAccount) {
@@ -136,21 +141,7 @@ function AccountInfo({searchAccount}) {
 
             <Container fluid className='contract'>
                 <h3 className='contract__header'>Contract</h3>
-                <Row className='contract__info'>
-                    <Col md={3}>
-                        <h5 className='contract__info__header'>Methods: {contract?.methodNames?.length}</h5>
-                        <ListGroup>
-                            {contractMethods()}
-                        </ListGroup>
-                    </Col>
-                    
-                    <Col md={3}>
-                        <h5 className='contract__info__header'>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
-                        <ListGroup>
-                            {contractInterfaces()}
-                        </ListGroup>
-                    </Col>
-                </Row>
+                <ContractInfo />
             </Container>
         </div>
       )
@@ -159,6 +150,30 @@ function AccountInfo({searchAccount}) {
             <h5 className='no-input-placeholder'>Search for account to get contract methods.</h5>
         )
     }
+
+
+    function ContractInfo() {
+        if (!noContractFound) {
+            return <Row className='contract__info'>
+                        <Col md={3}>
+                            <h5 className='contract__info__header'>Methods: {contract?.methodNames?.length}</h5>
+                            <ListGroup>
+                                {contractMethods()}
+                            </ListGroup>
+                        </Col>
+                        
+                        <Col md={3}>
+                            <h5 className='contract__info__header'>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
+                            <ListGroup>
+                                {contractInterfaces()}
+                            </ListGroup>
+                        </Col>
+                    </Row>
+        } else {
+            return <h5 className='contract__info__header'>No contract found</h5>
+        }
+    }
 }
+ 
 
 export default AccountInfo
