@@ -16,13 +16,23 @@ function AccountInfo({searchAccount}) {
     const [noContractFound, setNoContractFound] = useState(false);
 
     
-    const config = {
+    const testnet_config = {
         networkId: "testnet",
         // keyStore, // optional if not signing transactions
         nodeUrl: "https://rpc.testnet.near.org",
         walletUrl: "https://wallet.testnet.near.org",
         helperUrl: "https://helper.testnet.near.org",
         explorerUrl: "https://explorer.testnet.near.org",
+        deps: {}
+    };
+
+    const mainnet_config = {
+        networkId: "mainnet",
+        // keyStore,
+        nodeUrl: "https://rpc.mainnet.near.org",
+        walletUrl: "https://wallet.mainnet.near.org",
+        helperUrl: "https://helper.mainnet.near.org",
+        explorerUrl: "https://explorer.mainnet.near.org",
         deps: {}
     };
 
@@ -106,7 +116,16 @@ function AccountInfo({searchAccount}) {
             setNoContractFound(false);
             setContract({});
 
-            const accountId = searchAccount || 'tenk.testnet';
+            const accountId = searchAccount;
+            
+            let config;
+
+            if (accountId.slice(-8) == '.testnet') {
+                config = testnet_config;
+            } else if (accountId.slice(-5) == '.near') {
+                config = mainnet_config
+            }
+
             let account;
 
             near = await connect(config);
