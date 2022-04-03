@@ -166,10 +166,11 @@ function AccountInfo({searchAccount}) {
                 <div className='account-info'>
                     <div className='balance'>
                         <h2 className='account'>Account: @{searchAccount}</h2>
-                
-                        <p>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></p>
-                        <p>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></p>
-                
+
+                        <div className='balances'>
+                            <div className='balance__available'>Available Balance: <b>{parseFloat(formattedBalance.available).toFixed(5)} NEAR</b></div>
+                            <div className='balance__staked'>Staked Balance: <b>{parseFloat(formattedBalance.staked).toFixed(5)} NEAR</b></div>
+                        </div>
                     </div>
                     
         
