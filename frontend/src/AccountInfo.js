@@ -80,6 +80,7 @@ function AccountInfo({searchAccount}) {
         if (contract && contract.methodNames) {
             if (contract.methodNames.length > 0) {
                 return contract.methodNames.map((method) => {return <ListGroup.Item variant='secondary' key={method}>{method}</ListGroup.Item>})
+                // return contract.methodNames.map((method) => {return <ListGroup.Item variant='secondary' key={method}><a href='#' onClick={callMethod}>{method}</a></ListGroup.Item>})
             } else {
                 return ''
             }
