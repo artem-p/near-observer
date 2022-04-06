@@ -10,7 +10,7 @@ function SearchInput({handleSubmit}) {
     <Form onSubmit={(event) => {event.preventDefault(); handleSubmit(searchInput)}}>
           <InputGroup className="search-account">
             <FormControl
-              placeholder="Search for account id"
+              placeholder=".near or .testnet"
               aria-label=""
               aria-describedby=""
               onChange={(event) => {setSearchInput(event.target.value)}}
