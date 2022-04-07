@@ -13,6 +13,24 @@ main {
 }
 
 .search-account {
-  width: 30% !important;
   margin: 0 auto;
+}
+
+
+@media screen and (min-width: 700px) {
+  .search-account {
+    width: 45% !important;
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .search-account {
+    width: 40% !important;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .search-account {
+    width: 35% !important;
+  }
 }
