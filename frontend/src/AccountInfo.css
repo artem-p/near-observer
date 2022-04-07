@@ -19,12 +19,16 @@
     text-align: center;
 }
 
-.contract__info {
+.contract-info {
     justify-content: center;
 }
 
-.contract__info__header {
+.contract-info__header {
     text-align: center;
+}
+
+.contract-info__members {
+    margin-bottom: 20px;
 }
 
 .balances {

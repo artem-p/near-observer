@@ -194,23 +194,23 @@ function AccountInfo({searchAccount}) {
 
     function ContractInfo() {
         if (!noContractFound) {
-            return <Row className='contract__info'>
-                        <Col md={3}>
-                            <h5 className='contract__info__header'>Methods: {contract?.methodNames?.length}</h5>
+            return <Row className='contract-info'>
+                        <Col md={3} className='contract-info__members'>
+                            <h5 className='contract-info__header'>Methods: {contract?.methodNames?.length}</h5>
                             <ListGroup>
                                 {contractMethods()}
                             </ListGroup>
                         </Col>
                         
-                        <Col md={3}>
-                            <h5 className='contract__info__header'>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
+                        <Col md={3} className='contract-info__members'>
+                            <h5 className='contract-info__header'>Possible Interfaces: {contract?.probableInterfaces?.length}</h5>
                             <ListGroup>
                                 {contractInterfaces()}
                             </ListGroup>
                         </Col>
                     </Row>
         } else {
-            return <h5 className='contract__info__header'>No contract found</h5>
+            return <h5 className='contract-info__header'>No contract found</h5>
         }
     }
 }
